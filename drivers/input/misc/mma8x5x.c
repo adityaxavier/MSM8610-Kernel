@@ -598,7 +598,7 @@ static int __devinit mma8x5x_probe(struct i2c_client *client,
 		if (result)
 			return result;
 	} else {
-		pdata->position = CONFIG_GOSO_SENSORS_MMA_POSITION;
+		pdata->position = CONFIG_SENSORS_MMA_POSITION;
 		pdata->int_pin = -1;
 		pdata->int_flags = 0;
 	}
