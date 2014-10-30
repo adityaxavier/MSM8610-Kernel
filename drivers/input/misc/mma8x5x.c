@@ -361,9 +361,9 @@ static void mma8x5x_report_data(struct mma8x5x_data *pdata)
 	if (mma8x5x_read_data(pdata->client, &data) != 0)
 		goto out;
 	mma8x5x_data_convert(pdata, &data);
-	input_report_abs(poll_dev->input, ABS_X, data.x);
-	input_report_abs(poll_dev->input, ABS_Y, data.y);
-	input_report_abs(poll_dev->input, ABS_Z, data.z);
+	input_report_abs(poll_dev->input, ABS_RX, data.x);
+	input_report_abs(poll_dev->input, ABS_RY, data.y);
+	input_report_abs(poll_dev->input, ABS_RZ, data.z);
 	input_sync(poll_dev->input);
 out:
 	mutex_unlock(&pdata->data_lock);
@@ -598,7 +598,7 @@ static int __devinit mma8x5x_probe(struct i2c_client *client,
 		if (result)
 			return result;
 	} else {
-		pdata->position = CONFIG_SENSORS_MMA_POSITION;
+		pdata->position = CONFIG_GOSO_SENSORS_MMA_POSITION;
 		pdata->int_pin = -1;
 		pdata->int_flags = 0;
 	}
@@ -629,9 +629,9 @@ static int __devinit mma8x5x_probe(struct i2c_client *client,
 	idev->uniq = mma8x5x_id2name(pdata->chip_id);
 	idev->id.bustype = BUS_I2C;
 	idev->evbit[0] = BIT_MASK(EV_ABS);
-	input_set_abs_params(idev, ABS_X, -0x7fff, 0x7fff, 0, 0);
-	input_set_abs_params(idev, ABS_Y, -0x7fff, 0x7fff, 0, 0);
-	input_set_abs_params(idev, ABS_Z, -0x7fff, 0x7fff, 0, 0);
+	input_set_abs_params(idev, ABS_RX, -100000, 100000, 0, 0);
+	input_set_abs_params(idev, ABS_RY, -100000, 100000, 0, 0);
+	input_set_abs_params(idev, ABS_RZ, -100000, 100000, 0, 0);
 	pdata->poll_dev = poll_dev;
 	result = input_register_polled_device(pdata->poll_dev);
 	if (result) {
